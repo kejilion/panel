@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>科技lion面板 - 登录</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2196F3;
+            --secondary-color: #1976D2;
+            --background-color: #ECEFF1;
+            --card-background: #ffffff;
+            --text-color: #37474F;
+            --error-color: #EF5350;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-container {
+            background: var(--card-background);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 400px;
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-header i {
+            font-size: 48px;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .login-header h1 {
+            color: var(--text-color);
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .login-header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-group i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #f5f5f5;
+        }
+
+        .form-input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            background: white;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .login-btn:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .login-footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .login-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* 添加协议勾选框样式 */
+        .agreement-group {
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .agreement-group input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .agreement-group label {
+            font-size: 14px;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+
+        .agreement-group a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .agreement-group a:hover {
+            text-decoration: underline;
+        }
+
+        /* 禁用状态的登录按钮样式 */
+        .login-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 30px 20px;
+                margin: 20px;
+            }
+        }
+
+        /* 暗色主题支持 */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --card-background: #2d2d2d;
+                --text-color: #ffffff;
+            }
+
+            .login-container {
+                box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+            }
+
+            .form-input {
+                background: #3d3d3d;
+                border-color: #4d4d4d;
+                color: white;
+            }
+
+            .form-input:focus {
+                background: #3d3d3d;
+            }
+
+            .login-header p,
+            .login-footer {
+                color: #aaa;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <i class="fas fa-server"></i>
+            <h1>科技lion面板</h1>
+            <p>轻量级Linux服务器运维管理面板</p>
+        </div>
+        <form id="loginForm" onsubmit="return handleLogin(event)">
+            <div class="form-group">
+                <i class="fas fa-user"></i>
+                <input type="text" class="form-input" value="admin" readonly>
+            </div>
+            <div class="form-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" class="form-input" value="123456" readonly>
+            </div>
+            <div class="agreement-group">
+                <input type="checkbox" id="agreement" onchange="toggleLoginButton()">
+                <label for="agreement">我已阅读并同意<a href="#" onclick="showAgreement(event)">《用户协议》</a></label>
+            </div>
+            <button type="submit" class="login-btn" disabled>
+                <i class="fas fa-sign-in-alt"></i> 登录系统
+            </button>
+        </form>
+        <div class="login-footer">
+            <p>Powered by <a href="https://github.com/kejilion" target="_blank">科技lion</a></p>
+        </div>
+    </div>
+
+    <script>
+        function handleLogin(event) {
+            event.preventDefault();
+            // 直接跳转到系统监控页面
+            window.location.href = 'index.html';
+            return false;
+        }
+
+        function toggleLoginButton() {
+            const agreementCheckbox = document.getElementById('agreement');
+            const loginButton = document.querySelector('.login-btn');
+            loginButton.disabled = !agreementCheckbox.checked;
+        }
+
+        function showAgreement(event) {
+            event.preventDefault();
+            alert('用户协议内容将在这里显示');
+            // 这里可以替换为打开一个模态框显示完整的用户协议
+        }
+    </script>
+</body>
+</html> 

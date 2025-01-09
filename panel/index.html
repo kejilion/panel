@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linux 系统管理面板</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="top-nav">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-server"></i>
+                <span>科技lion面板</span>
+            </div>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link active">
+                    <i class="fas fa-microchip"></i>
+                    <span>系统监控管理</span>
+                </a>
+                <a href="docker.html" class="nav-link">
+                    <i class="fab fa-docker"></i>
+                    <span>Docker管理</span>
+                </a>
+                <a href="website.html" class="nav-link">
+                    <i class="fas fa-globe"></i>
+                    <span>网站管理</span>
+                </a>
+                <a href="filemanager.html" class="nav-link">
+                    <i class="fas fa-folder"></i>
+                    <span>文件管理器</span>
+                </a>
+                <a href="market.html" class="nav-link">
+                    <i class="fas fa-store"></i>
+                    <span>应用市场</span>
+                </a>
+                <a href="settings.html" class="nav-link">
+                    <i class="fas fa-cog"></i>
+                    <span>面板设置</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="dashboard">
+        <div class="page-header">
+            <h1>系统监控管理</h1>
+            <div class="time-display" id="currentTime"></div>
+        </div>
+
+        <div class="grid-container">
+            <!-- 系统基本信息 -->
+            <div class="card">
+                <h2><i class="fas fa-info-circle"></i> 系统信息</h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="label">主机名:</span>
+                        <span class="value">kejilion</span>
+                        <button class="action-btn" onclick="showHostnameModal()">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">系统版本:</span>
+                        <span class="value">
+                            <i class="fab fa-linux os-icon"></i>
+                            Alpine Linux v3.21
+                        </span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Linux版本:</span>
+                        <span class="value">6.12.3-0-virt</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">运行时长:</span>
+                        <span class="value">42分</span>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="long-btn" onclick="updateSystem()">
+                            <i class="fas fa-sync"></i>
+                            <span>系统更新</span>
+                        </button>
+                        <button class="long-btn" onclick="cleanSystem()">
+                            <i class="fas fa-broom"></i>
+                            <span>系统清理</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CPU信息 -->
+            <div class="card">
+                <h2><i class="fas fa-microchip"></i> CPU状态</h2>
+                <div class="gauge-container">
+                    <div class="gauge" id="cpuGauge">
+                        <div class="gauge-value">4%</div>
+                    </div>
+                </div>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="label">系统负载:</span>
+                        <span class="value">0.22, 0.07, 0.02</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">CPU型号:</span>
+                        <span class="value">DO-Premium-AMD</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">核心数:</span>
+                        <span class="value">1</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">频率:</span>
+                        <span class="value">2.0 GHz</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 内存使用 -->
+            <div class="card">
+                <h2><i class="fas fa-memory"></i> 内存使用</h2>
+                <div class="progress-container">
+                    <div class="memory-details">
+                        <div class="memory-item">
+                            <span class="memory-label">已用内存</span>
+                            <span class="memory-value">447.52 MB</span>
+                        </div>
+                        <div class="memory-item">
+                            <span class="memory-label">缓存</span>
+                            <span class="memory-value">124.32 MB</span>
+                        </div>
+                        <div class="memory-item">
+                            <span class="memory-label">可用内存</span>
+                            <span class="memory-value">400.70 MB</span>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-stack">
+                            <div class="progress progress-used" style="width: 46.02%"></div>
+                            <div class="progress progress-cache" style="width: 12.78%"></div>
+                        </div>
+                    </div>
+                    <div class="progress-text">447.52/972.54 MB (46.02%)</div>
+                    <button class="long-btn" onclick="cleanMemory()">
+                        <i class="fas fa-broom"></i>
+                        <span>清理内存</span>
+                    </button>
+                </div>
+                <div class="progress-container">
+                    <h3>虚拟内存</h3>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 58%"></div>
+                    </div>
+                    <div class="progress-text">599MB/1024MB (58%)</div>
+                    <button class="long-btn" onclick="configureSwap()">
+                        <i class="fas fa-cog"></i>
+                        <span>设置虚拟内存</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 硬盘使用 -->
+            <div class="card">
+                <h2><i class="fas fa-hdd"></i> 硬盘使用</h2>
+                <div class="disk-info">
+                    <div class="disk-mount-point">
+                        <span class="mount-label">/</span>
+                        <div class="progress-container">
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 25%"></div>
+                            </div>
+                            <div class="progress-text">5.6G/25G (25%)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="disk-mount-point">
+                        <span class="mount-label">/home</span>
+                        <div class="progress-container">
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 45%"></div>
+                            </div>
+                            <div class="progress-text">45G/100G (45%)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="disk-mount-point">
+                        <span class="mount-label">/data</span>
+                        <div class="progress-container">
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 78%"></div>
+                            </div>
+                            <div class="progress-text">780G/1000G (78%)</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="disk-actions">
+                    <button class="long-btn" onclick="mountDisk()">
+                        <i class="fas fa-plus-circle"></i>
+                        <span>挂载硬盘</span>
+                    </button>
+                    <button class="long-btn" onclick="manageDisk()">
+                        <i class="fas fa-tasks"></i>
+                        <span>管理分区</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 网络信息 -->
+            <div class="card">
+                <h2><i class="fas fa-network-wired"></i> 网络信息</h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="label">总接收:</span>
+                        <span class="value">153.44 GB</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">总发送:</span>
+                        <span class="value">51.91 GB</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">网络算法:</span>
+                        <span class="value">bbr fq_codel</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">运营商:</span>
+                        <span class="value">AS138997 Eons Data Communications Limited</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">IP地址:</span>
+                        <span class="value">23.173.216.39</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">DNS地址:</span>
+                        <span class="value">127.0.0.53</span>
+                        <button class="action-btn" onclick="editDNS()" title="修改DNS">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">位置:</span>
+                        <span class="value">🇯🇵 JP Togoshi</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">系统时间:</span>
+                        <span class="value">Asia/Shanghai 2024-12-09 05:31 PM</span>
+                        <button class="action-btn" onclick="editTimezone()" title="调整时区">
+                            <i class="fas fa-clock"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="network-actions">
+                    <button class="long-btn" onclick="toggleWarp()">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>WARP开关</span>
+                    </button>
+                    <button class="long-btn" onclick="toggleBBR()">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>BBR加速</span>
+                    </button>
+                    <button class="long-btn" onclick="networkTools()">
+                        <i class="fas fa-tools"></i>
+                        <span>网络工具</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 系统进程 -->
+            <div class="card">
+                <h2><i class="fas fa-tasks"></i> 系统进程</h2>
+                <div class="process-container">
+                    <div class="process-header">
+                        <div class="process-col">进程名称</div>
+                        <div class="process-col">运行路径</div>
+                        <div class="process-col">PID</div>
+                        <div class="process-col">CPU</div>
+                        <div class="process-col">内存</div>
+                        <div class="process-col">操作</div>
+                    </div>
+                    <div class="process-list" id="processList">
+                        <!-- 进程列表将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+                <div class="process-actions">
+                    <button class="long-btn" onclick="refreshProcesses()">
+                        <i class="fas fa-sync"></i>
+                        <span>刷新列表</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 系统工具 -->
+            <div class="card">
+                <h2><i class="fas fa-tools"></i> 系统工具</h2>
+                <div class="tools-grid">
+                    <button class="tool-btn" onclick="setShortcut()" title="设置脚本启动快捷键">
+                        <i class="fas fa-keyboard"></i>
+                        <span>快捷键设置</span>
+                    </button>
+                    <button class="tool-btn" onclick="changePassword()" title="修改登录密码">
+                        <i class="fas fa-key"></i>
+                        <span>密码修改</span>
+                    </button>
+                    <button class="tool-btn" onclick="rootLogin()" title="ROOT密码登录模式">
+                        <i class="fas fa-user-shield"></i>
+                        <span>ROOT登录</span>
+                    </button>
+                    <button class="tool-btn" onclick="installPython()" title="安装Python指定版本">
+                        <i class="fab fa-python"></i>
+                        <span>Python安装</span>
+                    </button>
+                    <button class="tool-btn important" onclick="reinstallSystem()" title="一键重装系统">
+                        <i class="fas fa-redo-alt"></i>
+                        <span>系统重装</span>
+                    </button>
+                    <button class="tool-btn" onclick="manageFirewall()" title="防火墙管理器">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>防火墙管理</span>
+                    </button>
+                    <button class="tool-btn" onclick="manageUsers()" title="用户管理">
+                        <i class="fas fa-users"></i>
+                        <span>用户管理</span>
+                    </button>
+                    <button class="tool-btn" onclick="manageSchedule()" title="定时任务管理">
+                        <i class="fas fa-clock"></i>
+                        <span>定时任务</span>
+                    </button>
+                    <button class="tool-btn important" onclick="systemOptimize()" title="Linux系统内核参数优化">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>系统优化</span>
+                    </button>
+                    <button class="tool-btn" onclick="virusScan()" title="病毒扫描工具">
+                        <i class="fas fa-virus-slash"></i>
+                        <span>病毒扫描</span>
+                    </button>
+                    <button class="tool-btn" onclick="fileManager()" title="文件管理器">
+                        <i class="fas fa-folder"></i>
+                        <span>文件管理</span>
+                    </button>
+                    <button class="tool-btn" onclick="systemMonitor()" title="TG-bot系统监控警">
+                        <i class="fab fa-telegram"></i>
+                        <span>监控预警</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+    <script src="nav.js"></script>
+    <div class="modal" id="progressModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">系统更新</h3>
+            </div>
+            <div class="modal-body">
+                <div class="progress-wrapper">
+                    <div class="progress-bar">
+                        <div class="progress" id="modalProgress"></div>
+                    </div>
+                    <div class="progress-text" id="progressText">0%</div>
+                </div>
+                <div class="status-message" id="statusMessage">
+                    正在准备...
+                </div>
+                <div class="log-container" id="logContainer">
+                    <!-- 日志内容将在这里动态显示 -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn" id="modalCloseBtn" style="display: none;">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="confirmModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="confirmTitle">确认操作</h3>
+            </div>
+            <div class="modal-body">
+                <div class="confirm-message" id="confirmMessage">
+                    确定要执行此操作吗？
+                </div>
+                <div class="input-container" id="confirmInputContainer" style="display: none;">
+                    <input type="text" id="confirmInput" class="modal-input" placeholder="请输入...">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-cancel" id="confirmCancelBtn">
+                    取消
+                </button>
+                <button class="modal-btn" id="confirmOkBtn">
+                    确定
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="hostnameModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>修改主机名</h3>
+            </div>
+            <div class="modal-body">
+                <div class="input-container">
+                    <label for="newHostname">新主机名</label>
+                    <input type="text" id="newHostname" class="modal-input" placeholder="请输入新的主机名">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-cancel" onclick="closeHostnameModal()">取消</button>
+                <button class="modal-btn" onclick="submitNewHostname()">确定</button>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="swapModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>设置虚拟内存</h3>
+            </div>
+            <div class="modal-body">
+                <div class="swap-options">
+                    <button class="swap-option-btn" onclick="selectSwapSize(1024)">
+                        <span class="swap-size">1024M</span>
+                        <span class="swap-desc">适用于小内存服务器</span>
+                    </button>
+                    <button class="swap-option-btn" onclick="selectSwapSize(2048)">
+                        <span class="swap-size">2048M</span>
+                        <span class="swap-desc">推荐配置</span>
+                    </button>
+                    <button class="swap-option-btn" onclick="selectSwapSize(4096)">
+                        <span class="swap-size">4096M</span>
+                        <span class="swap-desc">适用于大内存服务器</span>
+                    </button>
+                    <button class="swap-option-btn custom" onclick="showCustomSwapInput()">
+                        <span class="swap-size"><i class="fas fa-sliders-h"></i> 自定义</span>
+                        <span class="swap-desc">手动设置大小</span>
+                    </button>
+                </div>
+                <div class="custom-swap-input" style="display: none;">
+                    <div class="input-container">
+                        <label for="customSwapSize">自定义大小 (M)</label>
+                        <input type="number" id="customSwapSize" class="modal-input" placeholder="请输入虚拟内存大小">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-cancel" onclick="closeSwapModal()">取消</button>
+                <button class="modal-btn" onclick="submitSwapSize()">确定</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 
